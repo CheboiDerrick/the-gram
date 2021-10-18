@@ -117,7 +117,7 @@ def like_image(request, id):
 
 # single image page with comments
 @login_required(login_url='/accounts/login/')
-def single_image(request, id):
+def view_post(request, id):
     post = Post.objects.get(id=id)
     # get related images to the image that is being viewed by the user and order them by the date they were created
     related_posts = Post.objects.filter(
@@ -130,3 +130,52 @@ def single_image(request, id):
         return render(request, 'picture.html', {'post': post, 'comments': comments, 'posts': related_posts, 'title': title})
     else:
         return redirect('/')
+
+
+# save comment
+@login_required(login_url='/accounts/login/')
+def add_comment(request):
+    if request.method == 'POST':
+        comment = request.POST['comment']
+        post_id = request.POST['image_id']
+        post = Post.objects.get(id=post_id)
+        user = request.user
+        comment = Comments(comment=comment, post_id=post_id, user_id=user.id)
+        comment.save_comment()
+        # increase the number of comments by 1 for the image
+        post.comments = post.comments + 1
+        post.save()
+        return redirect('/picture/' + str(post_id))
+    else:
+        return redirect('/')
+
+
+# user profile page with images
+@login_required(login_url='/accounts/login/')
+def user_profile(request, id):
+    # check if user exists
+    if User.objects.filter(id=id).exists():
+        # get the user
+        user = User.objects.get(id=id)
+        # get all the images for the user
+        posts = Post.objects.filter(user_id=id)
+        # get the profile of the user
+        profile = Profile.objects.filter(user_id=id).first()
+        return render(request, 'user-profile.html', {'posts': posts, 'profile': profile, 'user': user})
+    else:
+        return redirect('/')
+
+
+# search for images
+@login_required(login_url='/accounts/login/')
+def search_posts(request):
+    if 'search' in request.GET and request.GET['search']:
+        search_term = request.GET.get('search').lower()
+        posts = Post.search_by_image_name(search_term)
+        message = f'{search_term}'
+        title = message
+
+        return render(request, 'search.html', {'success': message, 'posts': posts})
+    else:
+        message = 'You havent searched for any term'
+        return render(request, 'search.html', {'danger': message})
