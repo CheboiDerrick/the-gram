@@ -15,10 +15,15 @@ class Post(models.Model):
     image = models.ImageField(upload_to='posts', default=None)
     image_name = models.CharField(max_length=50)
     image_caption = models.TextField()
-    image_date = models.DateTimeField(auto_now_add=True)
+    posted_on = models.DateTimeField(auto_now_add=True)
     profile = models.ForeignKey(User, on_delete=models.CASCADE)
     likes = models.IntegerField(default=0)
     comments = models.IntegerField(default=0)
+
+    # Ordering based on latest post
+    class Meta:
+        ordering = ['-posted_on']
+
 
     # get images by user
     @classmethod
@@ -27,6 +32,13 @@ class Post(models.Model):
         return posts
     def delete_image(self):
         self.delete()
+
+    @classmethod
+    def get_all_comments(self):
+        return self.objects.comments.all()
+
+    def save_image(self):
+        self.save()
 
     # update image caption
     def update_caption(self, new_caption):
