@@ -96,20 +96,37 @@ def like_image(request, id):
         # unlike the image
         likes.delete()
         # reduce the number of likes by 1 for the image
-        image = Post.objects.get(id=id)
+        post = Post.objects.get(id=id)
         # check if the image like_count is equal to 0
-        if image.like_count == 0:
-            image.like_count = 0
-            image.save()
+        if post.likes == 0:
+            post.likes = 0
+            post.save()
         else:
-            image.like_count -= 1
-            image.save()
+            post.likes -= 1
+            post.save()
         return redirect('/')
     else:
         likes = Likes(image_id=id, user_id=request.user.id)
         likes.save()
         # increase the number of likes by 1 for the image
-        image = Post.objects.get(id=id)
-        image.like_count = image.like_count + 1
-        image.save()
+        post = Post.objects.get(id=id)
+        post.likes = post.likes + 1
+        post.save()
+        return redirect('/')
+
+
+# single image page with comments
+@login_required(login_url='/accounts/login/')
+def single_image(request, id):
+    post = Post.objects.get(id=id)
+    # get related images to the image that is being viewed by the user and order them by the date they were created
+    related_posts = Post.objects.filter(
+        user_id=post.user_id).order_by('-image_date')
+    title = post.image_name
+    # check if image exists
+    if Post.objects.filter(id=id).exists():
+        # get all the comments for the image
+        comments = Comments.objects.filter(image_id=id)
+        return render(request, 'picture.html', {'post': post, 'comments': comments, 'posts': related_posts, 'title': title})
+    else:
         return redirect('/')
