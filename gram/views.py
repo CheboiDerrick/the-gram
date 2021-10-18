@@ -87,3 +87,29 @@ def update_profile(request):
         return render(request, 'profile.html', {'danger': 'Profile Update Failed'})
 
 
+# like image
+@login_required(login_url='/accounts/login/')
+def like_image(request, id):
+    likes = Likes.objects.filter(image_id=id).first()
+    # check if the user has already liked the image
+    if Likes.objects.filter(image_id=id, user_id=request.user.id).exists():
+        # unlike the image
+        likes.delete()
+        # reduce the number of likes by 1 for the image
+        image = Post.objects.get(id=id)
+        # check if the image like_count is equal to 0
+        if image.like_count == 0:
+            image.like_count = 0
+            image.save()
+        else:
+            image.like_count -= 1
+            image.save()
+        return redirect('/')
+    else:
+        likes = Likes(image_id=id, user_id=request.user.id)
+        likes.save()
+        # increase the number of likes by 1 for the image
+        image = Post.objects.get(id=id)
+        image.like_count = image.like_count + 1
+        image.save()
+        return redirect('/')
