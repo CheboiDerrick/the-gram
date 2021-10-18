@@ -7,9 +7,6 @@ from django.db.models.fields import related
 # cloudinary
 # from cloudinary.models import CloudinaryField
 
-
-
-
 # Create your models here.
 # post model
 class Post(models.Model):
@@ -80,8 +77,7 @@ class Profile(models.Model):
 
 # likes model
 class Likes(models.Model):
-    image = models.ForeignKey(Post, on_delete=models.CASCADE)
-    # likes = models.IntegerField(default=0)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
