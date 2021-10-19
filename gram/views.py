@@ -11,8 +11,8 @@ from .models import *
 #View for homepage that returns all posted images
 @login_required(login_url='/accounts/login/')
 def home(request):
-    posts = Post.objects.all().order_by('-image_date')
-    return render(request, 'index.html', {'posts': posts})
+    posts = Post.objects.all()
+    return render(request, 'home.html', {'posts': posts})
 
 # profile page
 @login_required(login_url='/accounts/login/')
@@ -90,9 +90,9 @@ def update_profile(request):
 # like image
 @login_required(login_url='/accounts/login/')
 def like_image(request, id):
-    likes = Likes.objects.filter(image_id=id).first()
+    likes = Like.objects.filter(image_id=id).first()
     # check if the user has already liked the image
-    if Likes.objects.filter(image_id=id, user_id=request.user.id).exists():
+    if Like.objects.filter(image_id=id, user_id=request.user.id).exists():
         # unlike the image
         likes.delete()
         # reduce the number of likes by 1 for the image
@@ -106,7 +106,7 @@ def like_image(request, id):
             post.save()
         return redirect('/')
     else:
-        likes = Likes(image_id=id, user_id=request.user.id)
+        likes = Like(image_id=id, user_id=request.user.id)
         likes.save()
         # increase the number of likes by 1 for the image
         post = Post.objects.get(id=id)
@@ -126,7 +126,7 @@ def view_post(request, id):
     # check if image exists
     if Post.objects.filter(id=id).exists():
         # get all the comments for the image
-        comments = Comments.objects.filter(image_id=id)
+        comments = Comment.objects.filter(image_id=id)
         return render(request, 'picture.html', {'post': post, 'comments': comments, 'posts': related_posts, 'title': title})
     else:
         return redirect('/')
@@ -140,7 +140,7 @@ def add_comment(request):
         post_id = request.POST['image_id']
         post = Post.objects.get(id=post_id)
         user = request.user
-        comment = Comments(comment=comment, post_id=post_id, user_id=user.id)
+        comment = Comment(comment=comment, post_id=post_id, user_id=user.id)
         comment.save_comment()
         # increase the number of comments by 1 for the image
         post.comments = post.comments + 1

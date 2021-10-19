@@ -88,7 +88,7 @@ class Profile(models.Model):
 
 
 # likes model
-class Likes(models.Model):
+class Like(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -97,7 +97,7 @@ class Likes(models.Model):
 
 
 # comments model
-class Comments(models.Model):
+class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ForeignKey(Post, on_delete=models.CASCADE)
     comment = models.CharField(max_length=50)
