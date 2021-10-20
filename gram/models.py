@@ -3,16 +3,16 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.fields import related
 
-
 # cloudinary
-# from cloudinary.models import CloudinaryField
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 # post model
 class Post(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='posts', default=None)
+    # image = models.ImageField(upload_to='posts', default=None)
+    image=CloudinaryField('image')
     image_name = models.CharField(max_length=50)
     image_caption = models.TextField()
     posted_on = models.DateTimeField(auto_now_add=True)
@@ -65,7 +65,8 @@ class Post(models.Model):
 # profile model
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_photo = models.ImageField(upload_to='accounts/profile_photos', default=None)
+    # profile_photo = models.ImageField(upload_to='accounts/profile_photos', default=None)
+    profile_photo=CloudinaryField('image')
     bio = models.TextField(max_length=500, blank=True, null=True)
     contact = models.CharField(max_length=50, blank=True, null=True)
 

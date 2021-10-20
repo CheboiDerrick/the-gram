@@ -16,6 +16,7 @@ django = "*"
 six = "*"
 auditlog = "*"
 django-registration = "*"
+cloudinary = "*"
 
 [dev-packages]
 pylint = "*"

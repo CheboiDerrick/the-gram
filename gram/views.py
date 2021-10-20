@@ -1,20 +1,17 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import *
-# import cloudinary
-# import cloudinary.uploader
-# import cloudinary.api
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 
 # Create your views here.
 
-#View for homepage that returns all posted images
+#View for homepage that displays posts
 @login_required(login_url='/accounts/login/')
 def home(request):
     posts = Post.objects.all()
-
-    
-
     return render(request, 'home.html', {'posts': posts})
 
 # profile page
@@ -34,10 +31,10 @@ def new_post(request):
         image_name = request.POST['image_name']
         image_caption = request.POST['image_caption']
         image_file = request.FILES['image_file']
-        # image_file = cloudinary.uploader.upload(image_file)
-        # image_url = image_file['url']
+        image_file = cloudinary.uploader.upload(image_file)
+        image_url = image_file['url']
         # image_public_id = image_file['public_id']
-        image = Post(image_name=image_name, image_caption=image_caption, image=image_file,
+        image = Post(image_name=image_name, image_caption=image_caption, image=image_url,
                       profile_id=request.POST['user_id'], user_id=request.POST['user_id'])
         image.save_image()
         return redirect('/profile', {'success': 'Image Uploaded Successfully'})
@@ -59,21 +56,20 @@ def update_profile(request):
         bio = request.POST['bio']
 
         profile_image = request.FILES['profile_pic']
-        # profile_image = cloudinary.uploader.upload(profile_image)
-        # profile_url = profile_image['url']
+        profile_image = cloudinary.uploader.upload(profile_image)
+        profile_url = profile_image['url']
 
         user = User.objects.get(id=current_user.id)
 
         # check if user exists in profile table and if not create a new profile
         if Profile.objects.filter(user_id=current_user.id).exists():
-
             profile = Profile.objects.get(user_id=current_user.id)
             profile.profile_photo = profile_image
             profile.bio = bio
             profile.save()
         else:
             profile = Profile(user_id=current_user.id,
-                              profile_photo=profile_image, bio=bio)
+                              profile_photo=profile_url, bio=bio)
             profile.save_profile()
 
         user.first_name = first_name
