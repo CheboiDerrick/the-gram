@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- blogs -->
+<section class="blog-section">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                {% if success %}
+                <div class="alert alert-success" role="alert">
+                    <h3>Results for '{{success }}'</h3>
+                </div>
+                {% else %}
+                <div class="alert alert-danger" role="alert">
+                    <h3>No Results for '{{danger }}' 😥</h3>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-md-4"></div>
+            {% for image in images %}
+            <div class="col-sm-12 col-md-3">
+                <div class="card mb-4">
+                    <div class="d-flex justify-content-start m-2">
+                        <div>
+                            <a href="{% url 'user.profile' image.user.id %}">
+                                <img src="https://res.cloudinary.com/developerwilson/image/upload/v1632582461/rzfpe5avqvhfbrtkwtqg.jpg"
+                                    alt="" class="user-avatar border-radius">
+                            </a>
+                        </div>
+                        <div class="text-center mt-1">
+                            <a href="{% url 'user.profile' image.user.id %}">
+                                <h6><small>{{ image.user.username }} </small></h6>
+                            </a>
+                        </div>
+                    </div>
+                    <img src="{{ image.image.url }}" class="card-img-top" alt="News Image">
+                    <div class="card-body">
+                        <small>
+                            <div class="d-flex justify-content-start">
+                                <div>
+                                    <p>
+                                        <a href="{% url 'like.image' image.id %}"> <i class="far fa-heart"></i></a>
+                                    </p>
+                                </div>
+                                <div>
+                                    <p>
+                                        <a href="{% url 'single.image' image.id %}"> <i class="far fa-comment"></i></a>
+                                    </p>
+                                </div>
+                            </div>
+                        </small>
+                        <a href="{% url 'single.image' image.id %}">
+                            <p class="fade-item">{{image.like_count }} Likes <br>View All {{image.comment_count }}
+                                Comments</p>
+                            <h6 class="">{{ image.image_caption|slice:":20" }}<small><span class="text-muted">...Read
+                                        More</span></small> </h6>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

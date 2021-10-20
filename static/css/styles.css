@@ -2,6 +2,10 @@
 
 
 /* styles for navbar */
+nav{
+  border-bottom:1px solid rgba(0, 0, 0, 0.308);padding-bottom:10px
+}
+
 .navbar-brand{
   color: black;
   font-family: 'Cookie', cursive;
@@ -9,6 +13,12 @@
 
 a {
   text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  text-decoration: underline;
+  color:black;
 }
 
 li {
@@ -19,6 +29,18 @@ li {
   display: none;
 }
 
+nav img:hover{
+  color: black;
+}
 
+.background, .blog-section{
+  background-color: #FAFAFA;
+}
 
+.card-header{
+  background-color:white;
+}
 
+input[placeholder] {
+  text-align: center;
+}

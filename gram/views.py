@@ -12,6 +12,9 @@ from .models import *
 @login_required(login_url='/accounts/login/')
 def home(request):
     posts = Post.objects.all()
+
+    
+
     return render(request, 'home.html', {'posts': posts})
 
 # profile page
@@ -90,9 +93,9 @@ def update_profile(request):
 # like image
 @login_required(login_url='/accounts/login/')
 def like_image(request, id):
-    likes = Like.objects.filter(image_id=id).first()
+    likes = Like.objects.filter(post_id=id).first()
     # check if the user has already liked the image
-    if Like.objects.filter(image_id=id, user_id=request.user.id).exists():
+    if Like.objects.filter(post_id=id, user_id=request.user.id).exists():
         # unlike the image
         likes.delete()
         # reduce the number of likes by 1 for the image
@@ -106,7 +109,7 @@ def like_image(request, id):
             post.save()
         return redirect('/')
     else:
-        likes = Like(image_id=id, user_id=request.user.id)
+        likes = Like(post_id=id, user_id=request.user.id)
         likes.save()
         # increase the number of likes by 1 for the image
         post = Post.objects.get(id=id)
