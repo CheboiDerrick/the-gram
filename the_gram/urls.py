@@ -21,6 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django_registration.backends.one_step.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('', include('gram.urls')),
     path('logout',views.logout_then_login, {"login_url": '/'}),
+    path('', include('gram.urls')),
 ]

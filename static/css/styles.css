@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Cookie&display=swap');
+
+
+/* styles for navbar */
+.navbar-brand{
+  color: black;
+  font-family: 'Cookie', cursive;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+
+
+

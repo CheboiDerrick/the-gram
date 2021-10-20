@@ -33,7 +33,7 @@ def new_post(request):
         image_file = request.FILES['image_file']
         # image_file = cloudinary.uploader.upload(image_file)
         # image_url = image_file['url']
-        image_public_id = image_file['public_id']
+        # image_public_id = image_file['public_id']
         image = Post(image_name=image_name, image_caption=image_caption, image=image_file,
                       profile_id=request.POST['user_id'], user_id=request.POST['user_id'])
         image.save_image()
@@ -121,12 +121,12 @@ def view_post(request, id):
     post = Post.objects.get(id=id)
     # get related images to the image that is being viewed by the user and order them by the date they were created
     related_posts = Post.objects.filter(
-        user_id=post.user_id).order_by('-image_date')
+        user_id=post.user_id)
     title = post.image_name
     # check if image exists
     if Post.objects.filter(id=id).exists():
         # get all the comments for the image
-        comments = Comment.objects.filter(image_id=id)
+        comments = Comment.objects.filter(post_id=id)
         return render(request, 'picture.html', {'post': post, 'comments': comments, 'posts': related_posts, 'title': title})
     else:
         return redirect('/')
@@ -137,7 +137,7 @@ def view_post(request, id):
 def add_comment(request):
     if request.method == 'POST':
         comment = request.POST['comment']
-        post_id = request.POST['image_id']
+        post_id = request.POST['post_id']
         post = Post.objects.get(id=post_id)
         user = request.user
         comment = Comment(comment=comment, post_id=post_id, user_id=user.id)
