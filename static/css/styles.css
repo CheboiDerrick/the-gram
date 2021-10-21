@@ -44,3 +44,7 @@ nav img:hover{
 input[placeholder] {
   text-align: center;
 }
+
+.registration{
+  height:80vh;
+}

@@ -1,12 +1,15 @@
 {%extends "django_registration/base.html"%} {% load bootstrap5 %}
 {% block content %}
-<div class="container">
-  <div class="row">
+<div class="container registration">
+  <div class="row my-auto">
     <!-- Empty div -->
-    <div class="col-md-4"></div>
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+      <img src="{%static 'images/insta.jpg'%}" class="img-fluid" alt="">
+    </div>
     <div class="col-md-4">
       {% if form.errors %}
-        <p> Some Information Might be Incorrect </p>
+        <p> Confirm the information entered and try again </p>
       {% endif %}
       <div class="panel panel-default">
 
@@ -31,8 +34,7 @@
       </div>
 
     </div>
-    <!-- empty div -->
-    <div class="col-md-4"></div>
+    <div class="col-md-2"></div>
   </div>
 </div>
 
