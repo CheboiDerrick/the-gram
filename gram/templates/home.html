@@ -15,11 +15,10 @@
                     <a href="{% url 'user.profile' image.user.id %}">
                         <h6>{{image.user.username}}</h6>
                     </a>
-
                 </div>
                 <h2>...</h2>
             </div>
-            <img src="{{ image.image.url }}" class="img-fluid" alt="...">
+            <img src="{{ image.image.url }}" class="img-fluid" alt="Post Image">
             <div class="card-body">
                 <div class="card-title">
                     <div class="d-flex">
@@ -33,7 +32,6 @@
                             <img src="{% static 'icons/send.svg'%}" alt="" srcset="">
                         </a>
                     </div>
-
                 </div>
                 <p class="fade-item">{{image.likes }} Likes </p>
                 <h6 class="">{{image.user.username}} {{ image.image_caption|slice:":20" }}<small><span
@@ -44,7 +42,6 @@
                         Comments</p>
                 </a>
                 <p class="text-muted">{{image.posted_on | timesince }}</p>
-
             </div>
         </div>
         {% endfor %}

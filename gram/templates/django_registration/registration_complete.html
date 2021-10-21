@@ -1,1 +1,6 @@
-<a href="{%url 'login'%}">LOGIN</a>
+{%load static%}
+<div class="container d-flex flex-column justify-content-center align-items-center">
+        <img src="{% static 'icons/done.png'%}" alt="Completed icon">
+        <h1>Your Registration was Successful</h1>
+        <a href="{%url 'login'%}"><button type="button" class="btn btn-success">LOGIN</button></a>
+</div>
