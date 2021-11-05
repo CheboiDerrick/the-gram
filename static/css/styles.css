@@ -46,5 +46,7 @@ input[placeholder] {
 }
 
 .registration{
-  height:80vh;
+  height: 100vh;
+  margin-top: auto;
+  margin-bottom: auto;
 }
