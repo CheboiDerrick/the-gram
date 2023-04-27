@@ -1,14 +1,14 @@
 {
     "builds": [
       {
-        "src": "the-gram/wsgi.py",
+        "src": "the_gram/wsgi.py",
         "use": "@vercel/python"
       }
     ],
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "the-gram/wsgi.py"
+        "dest": "the_gram/wsgi.py"
       }
     ]
 }
